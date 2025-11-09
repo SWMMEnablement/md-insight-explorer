@@ -22,9 +22,10 @@ interface FigureItem {
 interface TablesAndFiguresProps {
   content: string;
   compact?: boolean;
+  onNavigate?: (lineNumber: number) => void;
 }
 
-export const TablesAndFigures = ({ content, compact = false }: TablesAndFiguresProps) => {
+export const TablesAndFigures = ({ content, compact = false, onNavigate }: TablesAndFiguresProps) => {
   const [tables, setTables] = useState<TableItem[]>([]);
   const [figures, setFigures] = useState<FigureItem[]>([]);
 
@@ -95,15 +96,8 @@ export const TablesAndFigures = ({ content, compact = false }: TablesAndFiguresP
   }, [content]);
 
   const scrollToLine = (lineNumber: number) => {
-    // Find the scroll area containing the markdown content
-    const scrollArea = document.querySelector('[data-radix-scroll-area-viewport]');
-    if (scrollArea) {
-      // Estimate scroll position (approximate 24px per line)
-      const estimatedPosition = lineNumber * 24;
-      scrollArea.scrollTo({
-        top: estimatedPosition,
-        behavior: 'smooth'
-      });
+    if (onNavigate) {
+      onNavigate(lineNumber);
     }
   };
 

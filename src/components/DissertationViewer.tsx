@@ -29,6 +29,7 @@ export const DissertationViewer = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('document');
   const [isLoading, setIsLoading] = useState(true);
+  const [targetLine, setTargetLine] = useState<number | null>(null);
 
   useEffect(() => {
     fetch('/dissertation.md')
@@ -49,6 +50,30 @@ export const DissertationViewer = () => {
         match => `<mark class="bg-accent/30 px-0.5">${match}</mark>`
       )
     : content;
+
+  const handleNavigateToLine = (lineNumber: number) => {
+    // Switch to document tab
+    setActiveTab('document');
+    setTargetLine(lineNumber);
+  };
+
+  useEffect(() => {
+    if (targetLine !== null && activeTab === 'document') {
+      // Wait for tab to render then scroll
+      setTimeout(() => {
+        const scrollArea = document.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollArea) {
+          // Estimate scroll position (approximate 24px per line)
+          const estimatedPosition = targetLine * 24;
+          scrollArea.scrollTo({
+            top: estimatedPosition,
+            behavior: 'smooth'
+          });
+        }
+        setTargetLine(null);
+      }, 100);
+    }
+  }, [targetLine, activeTab]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -140,7 +165,7 @@ export const DissertationViewer = () => {
                         <TableOfContents content={content} compact />
                       </TabsContent>
                       <TabsContent value="tables" className="mt-0">
-                        <TablesAndFigures content={content} compact />
+                        <TablesAndFigures content={content} compact onNavigate={handleNavigateToLine} />
                       </TabsContent>
                     </Tabs>
                   </Card>
@@ -174,7 +199,7 @@ export const DissertationViewer = () => {
             </TabsContent>
 
             <TabsContent value="tables" className="mt-0">
-              <TablesAndFigures content={content} />
+              <TablesAndFigures content={content} onNavigate={handleNavigateToLine} />
             </TabsContent>
 
             <TabsContent value="visualizations" className="mt-0">
