@@ -9,8 +9,16 @@ import { MapPin, Droplets, Radio } from 'lucide-react';
 export const CatchmentMap = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState('');
+  const [mapboxToken, setMapboxToken] = useState('pk.eyJ1IjoiZGlja2luc29ucmUiLCJhIjoiY21oczd6eDllMWdoNDJpcTZ5dW9wN2J3aiJ9.Hwy-aXZytiY9I4q1WLnMmA');
   const [isTokenSet, setIsTokenSet] = useState(false);
+
+  // Initialize map on mount if token exists
+  useEffect(() => {
+    if (mapboxToken && !isTokenSet && mapContainer.current) {
+      setIsTokenSet(true);
+      initializeMap(mapboxToken);
+    }
+  }, []);
 
   // Monitoring stations in Giralang catchment
   const stations = [
