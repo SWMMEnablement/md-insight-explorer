@@ -75,6 +75,18 @@ export const DissertationViewer = () => {
     }
   }, [targetLine, activeTab]);
 
+  const handleExport = () => {
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Urban-Rainfall-Runoff-Modelling-Allan-Goyen.md';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -97,7 +109,7 @@ export const DissertationViewer = () => {
                 <FileText className="h-3 w-3 mr-1" />
                 22,703 lines
               </Badge>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleExport}>
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
