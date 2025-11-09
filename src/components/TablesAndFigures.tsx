@@ -34,66 +34,59 @@ export const TablesAndFigures = ({ content, compact = false }: TablesAndFiguresP
     const lines = content.split('\n');
     const extractedTables: TableItem[] = [];
     const extractedFigures: FigureItem[] = [];
-    let tableCounter = 1;
-    let figureCounter = 1;
 
-    // Extract tables
+    // Extract tables and figures
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       
-      // Detect markdown tables (lines with |)
+      // Look for bold figure patterns: **Figure X.X.X**
+      const boldFigurePattern = /\*\*Figure\s+([\d\.]+)\*\*\s+(.+)/;
+      const figureMatch = line.match(boldFigurePattern);
+      
+      if (figureMatch) {
+        const figureNumber = figureMatch[1];
+        const figureTitle = figureMatch[2].trim();
+        
+        extractedFigures.push({
+          id: `figure-${figureNumber}`,
+          title: `Figure ${figureNumber}: ${figureTitle}`,
+          lineNumber: i,
+          type: 'chart'
+        });
+      }
+
+      // Look for bold table patterns: **Table X.X.X**
+      const boldTablePattern = /\*\*Table\s+([\d\.]+)\*\*\s+(.+)/;
+      const tableMatch = line.match(boldTablePattern);
+      
+      if (tableMatch) {
+        const tableNumber = tableMatch[1];
+        const tableTitle = tableMatch[2].trim();
+        
+        extractedTables.push({
+          id: `table-${tableNumber}`,
+          title: `Table ${tableNumber}: ${tableTitle}`,
+          lineNumber: i,
+          preview: tableTitle.substring(0, 100)
+        });
+      }
+
+      // Also detect markdown tables (lines with |) for embedded tables
       if (line.includes('|') && line.split('|').length > 2) {
-        // Check if it's a header row by looking at next line for separator
         if (i + 1 < lines.length && lines[i + 1].includes('|') && lines[i + 1].includes('-')) {
           const headers = line.split('|').filter(h => h.trim()).map(h => h.trim());
           const title = headers.length > 0 ? headers.join(', ').substring(0, 60) : 'Untitled Table';
           
-          extractedTables.push({
-            id: `table-${tableCounter}`,
-            title: `Table ${tableCounter}: ${title}`,
-            lineNumber: i,
-            preview: line.substring(0, 100)
-          });
-          tableCounter++;
+          // Only add if not already added
+          if (!extractedTables.some(t => Math.abs(t.lineNumber - i) < 3)) {
+            extractedTables.push({
+              id: `table-embedded-${i}`,
+              title: `Embedded Table: ${title}`,
+              lineNumber: i,
+              preview: line.substring(0, 100)
+            });
+          }
         }
-      }
-
-      // Extract figures (images)
-      if (line.includes('![') || line.toLowerCase().includes('figure')) {
-        const figureMatch = line.match(/!\[(.*?)\]/);
-        const title = figureMatch ? figureMatch[1] : `Figure ${figureCounter}`;
-        
-        extractedFigures.push({
-          id: `figure-${figureCounter}`,
-          title: title || `Figure ${figureCounter}`,
-          lineNumber: i,
-          type: line.includes('![') ? 'image' : 'chart'
-        });
-        figureCounter++;
-      }
-
-      // Look for "Table X:" or "Figure X:" patterns in text
-      const tablePattern = /Table\s+(\d+)[:\s]+(.+)/i;
-      const figurePattern = /Figure\s+(\d+)[:\s]+(.+)/i;
-      
-      const tableMatch = line.match(tablePattern);
-      if (tableMatch && !extractedTables.some(t => t.lineNumber === i)) {
-        extractedTables.push({
-          id: `table-${tableMatch[1]}`,
-          title: `Table ${tableMatch[1]}: ${tableMatch[2].substring(0, 60)}`,
-          lineNumber: i,
-          preview: tableMatch[2].substring(0, 100)
-        });
-      }
-
-      const figureMatch = line.match(figurePattern);
-      if (figureMatch && !extractedFigures.some(f => f.lineNumber === i)) {
-        extractedFigures.push({
-          id: `figure-${figureMatch[1]}`,
-          title: `Figure ${figureMatch[1]}: ${figureMatch[2].substring(0, 60)}`,
-          lineNumber: i,
-          type: 'chart'
-        });
       }
     }
 
@@ -102,10 +95,15 @@ export const TablesAndFigures = ({ content, compact = false }: TablesAndFiguresP
   }, [content]);
 
   const scrollToLine = (lineNumber: number) => {
-    // This is a simplified approach - in production you'd want more sophisticated scrolling
-    const element = document.querySelector('.prose');
-    if (element) {
-      element.scrollTop = lineNumber * 20; // Approximate line height
+    // Find the scroll area containing the markdown content
+    const scrollArea = document.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollArea) {
+      // Estimate scroll position (approximate 24px per line)
+      const estimatedPosition = lineNumber * 24;
+      scrollArea.scrollTo({
+        top: estimatedPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
