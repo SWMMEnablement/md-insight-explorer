@@ -2,7 +2,8 @@ import { Card } from '@/components/ui/card';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, Droplets, MapPin, Calendar } from 'lucide-react';
+import { TrendingUp, Droplets, MapPin, Calendar, Map as MapIcon } from 'lucide-react';
+import { CatchmentMap } from './CatchmentMap';
 
 export const DataVisualization = () => {
   // Sample data representing typical urban hydrology patterns
@@ -78,13 +79,21 @@ export const DataVisualization = () => {
         </div>
       </Card>
 
-      <Tabs defaultValue="rainfall" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="rainfall">Rainfall Pattern</TabsTrigger>
-          <TabsTrigger value="runoff">Runoff Response</TabsTrigger>
-          <TabsTrigger value="catchment">Catchment Composition</TabsTrigger>
-          <TabsTrigger value="events">Storm Events</TabsTrigger>
+      <Tabs defaultValue="map" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="map" className="flex items-center gap-1">
+            <MapIcon className="h-3 w-3" />
+            <span className="hidden sm:inline">Map</span>
+          </TabsTrigger>
+          <TabsTrigger value="rainfall">Rainfall</TabsTrigger>
+          <TabsTrigger value="runoff">Runoff</TabsTrigger>
+          <TabsTrigger value="catchment">Surfaces</TabsTrigger>
+          <TabsTrigger value="events">Events</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="map" className="mt-6">
+          <CatchmentMap />
+        </TabsContent>
 
         <TabsContent value="rainfall" className="mt-6">
           <Card className="p-6 shadow-card">
