@@ -20,43 +20,43 @@ export const CatchmentMap = () => {
     }
   }, []);
 
-  // Monitoring stations in Giralang catchment
+  // Monitoring stations in Giralang catchment based on dissertation research
   const stations = [
     {
-      name: 'Outlet Flow Monitoring Station',
+      name: 'Catchment Outlet Gauge',
       type: 'Flow Meter',
-      coordinates: [149.0833, -35.2167],
-      description: 'Main catchment outlet with continuous flow monitoring'
+      coordinates: [149.0865, -35.2190],
+      description: 'Main 1800mm pipe outlet - Total catchment flow monitoring (operated by ACTEW since 1976)'
     },
     {
-      name: 'Rainfall Station A',
+      name: 'Rainfall Gauge - Gundulu Place',
       type: 'Rain Gauge',
-      coordinates: [149.0820, -35.2160],
-      description: 'Upstream rainfall monitoring (5-minute intervals)'
+      coordinates: [149.0835, -35.2165],
+      description: 'Lot 1 Gundulu Place - HS tipping bucket (0.2mm resolution, 30-second intervals)'
     },
     {
-      name: 'Rainfall Station B',
+      name: 'Rainfall Gauge - Chuculba Crescent',
       type: 'Rain Gauge',
-      coordinates: [149.0845, -35.2172],
-      description: 'Downstream rainfall monitoring (5-minute intervals)'
+      coordinates: [149.0845, -35.2170],
+      description: 'Lot 3 Chuculba Crescent - HS tipping bucket raingauge'
     },
     {
-      name: 'Roof Runoff Station R1',
+      name: '12 Roof Micro-Catchment',
       type: 'Flow Meter',
-      coordinates: [149.0828, -35.2155],
-      description: 'Individual allotment roof runoff measurement'
+      coordinates: [149.0840, -35.2167],
+      description: '300mm pipe gauge - 12 residential roof allotments (0.93 ha) - Roof runoff only'
     },
     {
-      name: 'Roof Runoff Station R2',
+      name: '14 Lot Micro-Catchment',
       type: 'Flow Meter',
-      coordinates: [149.0838, -35.2165],
-      description: 'Individual allotment roof runoff measurement'
+      coordinates: [149.0838, -35.2173],
+      description: '450mm pipe gauge - 14 allotments (1.54 ha) - Roofs, yards and roadway runoff'
     },
     {
-      name: 'Surface Flow Station S1',
+      name: 'Rural/Urban Interface',
       type: 'Flow Meter',
-      coordinates: [149.0825, -35.2170],
-      description: 'Paired surface runoff monitoring'
+      coordinates: [149.0820, -35.2145],
+      description: '900mm pipe gauge - Rural area runoff (19.6 ha pasture)'
     }
   ];
 
@@ -99,42 +99,84 @@ export const CatchmentMap = () => {
     );
 
     map.current.on('load', () => {
-      // Add catchment boundary (approximate polygon)
-      map.current?.addSource('catchment', {
+      // Add urban catchment boundary (62.9 ha)
+      map.current?.addSource('catchment-urban', {
         type: 'geojson',
         data: {
           type: 'Feature',
-          properties: {},
+          properties: { name: 'Urban Area (62.9 ha)', allotments: 526 },
           geometry: {
             type: 'Polygon',
             coordinates: [[
-              [149.0810, -35.2150],
-              [149.0860, -35.2150],
-              [149.0860, -35.2185],
-              [149.0810, -35.2185],
-              [149.0810, -35.2150]
+              [149.0810, -35.2145],
+              [149.0875, -35.2145],
+              [149.0875, -35.2195],
+              [149.0810, -35.2195],
+              [149.0810, -35.2145]
             ]]
           }
         }
       });
 
+      // Add rural catchment boundary (19.6 ha at top)
+      map.current?.addSource('catchment-rural', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: { name: 'Rural Area (19.6 ha)' },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [149.0810, -35.2120],
+              [149.0850, -35.2120],
+              [149.0850, -35.2145],
+              [149.0810, -35.2145],
+              [149.0810, -35.2120]
+            ]]
+          }
+        }
+      });
+
+      // Urban catchment layers
       map.current?.addLayer({
-        id: 'catchment-fill',
+        id: 'catchment-urban-fill',
         type: 'fill',
-        source: 'catchment',
+        source: 'catchment-urban',
         paint: {
           'fill-color': 'hsl(var(--primary))',
-          'fill-opacity': 0.2
+          'fill-opacity': 0.25
         }
       });
 
       map.current?.addLayer({
-        id: 'catchment-outline',
+        id: 'catchment-urban-outline',
         type: 'line',
-        source: 'catchment',
+        source: 'catchment-urban',
         paint: {
           'line-color': 'hsl(var(--primary))',
           'line-width': 3,
+          'line-dasharray': [3, 2]
+        }
+      });
+
+      // Rural catchment layers
+      map.current?.addLayer({
+        id: 'catchment-rural-fill',
+        type: 'fill',
+        source: 'catchment-rural',
+        paint: {
+          'fill-color': 'hsl(var(--accent))',
+          'fill-opacity': 0.15
+        }
+      });
+
+      map.current?.addLayer({
+        id: 'catchment-rural-outline',
+        type: 'line',
+        source: 'catchment-rural',
+        paint: {
+          'line-color': 'hsl(var(--accent))',
+          'line-width': 2,
           'line-dasharray': [2, 2]
         }
       });
@@ -229,53 +271,81 @@ export const CatchmentMap = () => {
               Belconnen District, Canberra, ACT, Australia
             </p>
           </div>
-          <Badge variant="secondary" className="text-xs">
-            Area: 62.9 ha
-          </Badge>
+          <div className="flex gap-2">
+            <Badge variant="secondary" className="text-xs">
+              Urban: 62.9 ha (526 allotments)
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              Rural: 19.6 ha
+            </Badge>
+          </div>
         </div>
 
         <div ref={mapContainer} className="w-full h-[500px] rounded-lg shadow-lg" />
 
-        <div className="grid md:grid-cols-2 gap-4 mt-6">
+        <div className="grid md:grid-cols-3 gap-4 mt-6">
           <Card className="p-4 bg-muted/30">
             <div className="flex items-center gap-2 mb-3">
               <Droplets className="h-4 w-4 text-accent" />
-              <h4 className="font-semibold text-sm">Rain Gauges</h4>
+              <h4 className="font-semibold text-sm">Rainfall Monitoring</h4>
             </div>
             <ul className="space-y-2 text-xs text-muted-foreground">
-              <li>• 5-minute rainfall intensity recording</li>
-              <li>• Spatial distribution analysis</li>
-              <li>• Total depth and peak intensity measurement</li>
+              <li>• HS tipping bucket raingauges (0.2mm resolution)</li>
+              <li>• 30-second to 5-minute intervals</li>
+              <li>• Spatial distribution across catchment</li>
             </ul>
           </Card>
           <Card className="p-4 bg-muted/30">
             <div className="flex items-center gap-2 mb-3">
               <Radio className="h-4 w-4 text-primary" />
-              <h4 className="font-semibold text-sm">Flow Monitoring</h4>
+              <h4 className="font-semibold text-sm">Micro-Catchments</h4>
             </div>
             <ul className="space-y-2 text-xs text-muted-foreground">
-              <li>• Continuous flow hydrographs</li>
-              <li>• Individual allotment measurements</li>
-              <li>• Paired roof and surface runoff data</li>
+              <li>• 12 roof allotments (300mm pipe)</li>
+              <li>• 14 lot mixed (450mm pipe)</li>
+              <li>• Paired nested monitoring</li>
+            </ul>
+          </Card>
+          <Card className="p-4 bg-muted/30">
+            <div className="flex items-center gap-2 mb-3">
+              <Radio className="h-4 w-4 text-primary" />
+              <h4 className="font-semibold text-sm">Catchment Scale</h4>
+            </div>
+            <ul className="space-y-2 text-xs text-muted-foreground">
+              <li>• Total outlet (1800mm pipe)</li>
+              <li>• Rural/urban interface (900mm)</li>
+              <li>• Continuous monitoring since 1976</li>
             </ul>
           </Card>
         </div>
       </Card>
 
       <Card className="p-4 shadow-card bg-muted/30">
-        <h4 className="font-semibold text-sm mb-2">Legend</h4>
-        <div className="flex flex-wrap gap-4 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(var(--accent))' }}>💧</div>
-            <span>Rain Gauge Stations</span>
+        <h4 className="font-semibold text-sm mb-2">Legend & Research Details</h4>
+        <div className="grid md:grid-cols-2 gap-4 text-xs">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(var(--accent))' }}>💧</div>
+              <span>Rain Gauge Stations</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(var(--primary))' }}>📊</div>
+              <span>Flow Monitoring Stations</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-0.5" style={{ backgroundColor: 'hsl(var(--primary))', opacity: 0.6 }}></div>
+              <span>Urban Catchment (62.9 ha)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-0.5" style={{ backgroundColor: 'hsl(var(--accent))', opacity: 0.6 }}></div>
+              <span>Rural Catchment (19.6 ha)</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'hsl(var(--primary))' }}>📊</div>
-            <span>Flow Monitoring Stations</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-0.5" style={{ backgroundColor: 'hsl(var(--primary))', opacity: 0.6 }}></div>
-            <span>Catchment Boundary</span>
+          <div className="text-muted-foreground space-y-1">
+            <p><strong>Location:</strong> Giralang, Belconnen District</p>
+            <p><strong>Monitoring Period:</strong> 1993-1996 (3 years)</p>
+            <p><strong>Streets:</strong> Chuculba Crescent, Gundulu Place, Spica Street</p>
+            <p><strong>Outlet:</strong> Ginninderra Creek & Lake</p>
           </div>
         </div>
       </Card>
