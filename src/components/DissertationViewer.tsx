@@ -58,10 +58,10 @@ export const DissertationViewer = () => {
               <BookOpen className="h-8 w-8 text-primary" />
               <div>
                 <h1 className="text-2xl font-bold text-foreground">
-                  Urban Rainfall/Runoff Modelling
+                  Urban Rainfall/Runoff Modelling - Allan Goyen
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  Allan Goyen - PhD Thesis, UTS 2000
+                  PhD Thesis, University of Technology Sydney, 2000
                 </p>
               </div>
             </div>

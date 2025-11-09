@@ -53,6 +53,9 @@ export default {
           'light-blue': "hsl(var(--academic-light-blue))",
           gray: "hsl(var(--academic-gray))",
         },
+        'australia-blue': "hsl(var(--australia-blue))",
+        'ocean-blue': "hsl(var(--ocean-blue))",
+        'reef-turquoise': "hsl(var(--reef-turquoise))",
         'code-bg': "hsl(var(--code-bg))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

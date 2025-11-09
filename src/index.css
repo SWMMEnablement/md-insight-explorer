@@ -8,45 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 100%;
+    --foreground: 215 25% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 215 25% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 215 25% 15%;
 
-    --primary: 210 100% 35%;
+    --primary: 207 90% 54%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 214 32% 91%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 199 89% 48%;
+    --accent: 180 82% 44%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 88%;
-    --input: 214 32% 91%;
-    --ring: 210 100% 35%;
+    --border: 210 30% 88%;
+    --input: 210 30% 88%;
+    --ring: 207 90% 54%;
 
     --radius: 0.75rem;
     
     --academic-navy: 220 60% 25%;
-    --academic-blue: 210 100% 35%;
+    --academic-blue: 207 90% 54%;
     --academic-light-blue: 199 89% 48%;
     --academic-gray: 215 16% 47%;
     --code-bg: 220 13% 18%;
+    --australia-blue: 207 90% 54%;
+    --ocean-blue: 199 89% 48%;
+    --reef-turquoise: 180 82% 44%;
     
-    --gradient-header: linear-gradient(135deg, hsl(220 60% 25%), hsl(210 100% 35%));
-    --shadow-card: 0 2px 8px hsla(220, 60%, 25%, 0.08);
-    --shadow-elevated: 0 8px 24px hsla(220, 60%, 25%, 0.12);
+    --gradient-header: linear-gradient(135deg, hsl(207 90% 54%), hsl(180 82% 44%));
+    --shadow-card: 0 2px 8px hsla(207, 90%, 54%, 0.08);
+    --shadow-elevated: 0 8px 24px hsla(207, 90%, 54%, 0.12);
 
     --sidebar-background: 0 0% 98%;
 
@@ -66,41 +69,44 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222 47% 7%;
+    --background: 215 28% 12%;
     --foreground: 210 40% 98%;
 
-    --card: 220 13% 13%;
+    --card: 215 25% 16%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 220 13% 13%;
+    --popover: 215 25% 16%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 199 89% 48%;
-    --primary-foreground: 220 13% 13%;
+    --primary: 207 90% 61%;
+    --primary-foreground: 215 28% 12%;
 
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 199 89% 52%;
+    --secondary-foreground: 215 28% 12%;
 
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 217 32% 20%;
+    --muted-foreground: 215 20% 70%;
 
-    --accent: 210 100% 45%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 180 82% 50%;
+    --accent-foreground: 215 28% 12%;
 
-    --destructive: 0 63% 31%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 199 89% 48%;
+    --border: 217 32% 24%;
+    --input: 217 32% 24%;
+    --ring: 207 90% 61%;
     
     --academic-navy: 220 60% 85%;
-    --academic-blue: 210 100% 65%;
+    --academic-blue: 207 90% 61%;
     --academic-light-blue: 199 89% 58%;
-    --academic-gray: 215 20% 65%;
+    --academic-gray: 215 20% 70%;
     --code-bg: 220 13% 18%;
+    --australia-blue: 207 90% 61%;
+    --ocean-blue: 199 89% 52%;
+    --reef-turquoise: 180 82% 50%;
     
-    --gradient-header: linear-gradient(135deg, hsl(220 60% 20%), hsl(210 100% 25%));
+    --gradient-header: linear-gradient(135deg, hsl(207 90% 54%), hsl(180 82% 44%));
     --shadow-card: 0 2px 8px hsla(0, 0%, 0%, 0.3);
     --shadow-elevated: 0 8px 24px hsla(0, 0%, 0%, 0.4);
     --sidebar-background: 240 5.9% 10%;
