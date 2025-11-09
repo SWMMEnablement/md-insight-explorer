@@ -16,11 +16,13 @@ import {
   FileText, 
   BarChart3,
   Download,
-  ChevronRight
+  ChevronRight,
+  Table2
 } from 'lucide-react';
 import { TableOfContents } from './TableOfContents';
 import { BackgroundInfo } from './BackgroundInfo';
 import { DataVisualization } from './DataVisualization';
+import { TablesAndFigures } from './TablesAndFigures';
 
 export const DissertationViewer = () => {
   const [content, setContent] = useState<string>('');
@@ -98,7 +100,7 @@ export const DissertationViewer = () => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4 mx-auto">
+          <TabsList className="grid w-full max-w-3xl grid-cols-5 mx-auto">
             <TabsTrigger value="document" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Document</span>
@@ -106,6 +108,10 @@ export const DissertationViewer = () => {
             <TabsTrigger value="contents" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               <span className="hidden sm:inline">Contents</span>
+            </TabsTrigger>
+            <TabsTrigger value="tables" className="flex items-center gap-2">
+              <Table2 className="h-4 w-4" />
+              <span className="hidden sm:inline">Tables</span>
             </TabsTrigger>
             <TabsTrigger value="visualizations" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
@@ -125,7 +131,18 @@ export const DissertationViewer = () => {
                     <h3 className="font-semibold mb-4 text-sm uppercase tracking-wide text-muted-foreground">
                       Quick Navigation
                     </h3>
-                    <TableOfContents content={content} compact />
+                    <Tabs defaultValue="toc" className="w-full">
+                      <TabsList className="grid w-full grid-cols-2 mb-3">
+                        <TabsTrigger value="toc" className="text-xs">Contents</TabsTrigger>
+                        <TabsTrigger value="tables" className="text-xs">Tables</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="toc" className="mt-0">
+                        <TableOfContents content={content} compact />
+                      </TabsContent>
+                      <TabsContent value="tables" className="mt-0">
+                        <TablesAndFigures content={content} compact />
+                      </TabsContent>
+                    </Tabs>
                   </Card>
                 </aside>
 
@@ -154,6 +171,10 @@ export const DissertationViewer = () => {
               <Card className="p-6 shadow-card">
                 <TableOfContents content={content} />
               </Card>
+            </TabsContent>
+
+            <TabsContent value="tables" className="mt-0">
+              <TablesAndFigures content={content} />
             </TabsContent>
 
             <TabsContent value="visualizations" className="mt-0">
