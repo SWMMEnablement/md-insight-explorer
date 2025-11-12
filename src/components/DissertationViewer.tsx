@@ -17,8 +17,15 @@ import {
   BarChart3,
   Download,
   ChevronRight,
-  Table2
+  Table2,
+  ChevronDown
 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { TableOfContents } from './TableOfContents';
 import { BackgroundInfo } from './BackgroundInfo';
 import { DataVisualization } from './DataVisualization';
@@ -75,12 +82,47 @@ export const DissertationViewer = () => {
     }
   }, [targetLine, activeTab]);
 
-  const handleExport = () => {
-    const blob = new Blob([content], { type: 'text/markdown' });
+  const handleExport = (format: 'md' | 'txt' | 'html') => {
+    let blob: Blob;
+    let filename: string;
+
+    switch (format) {
+      case 'md':
+        blob = new Blob([content], { type: 'text/markdown' });
+        filename = 'Urban-Rainfall-Runoff-Modelling-Allan-Goyen.md';
+        break;
+      case 'txt':
+        blob = new Blob([content], { type: 'text/plain' });
+        filename = 'Urban-Rainfall-Runoff-Modelling-Allan-Goyen.txt';
+        break;
+      case 'html':
+        const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Rainfall/Runoff Modelling - Allan Goyen</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+    pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    code { background: #f5f5f5; padding: 2px 4px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+</body>
+</html>`;
+        blob = new Blob([htmlContent], { type: 'text/html' });
+        filename = 'Urban-Rainfall-Runoff-Modelling-Allan-Goyen.html';
+        break;
+    }
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Urban-Rainfall-Runoff-Modelling-Allan-Goyen.md';
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -109,10 +151,26 @@ export const DissertationViewer = () => {
                 <FileText className="h-3 w-3 mr-1" />
                 22,703 lines
               </Badge>
-              <Button variant="outline" size="sm" onClick={handleExport}>
-                <Download className="h-4 w-4 mr-2" />
-                Export
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                    <ChevronDown className="h-4 w-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => handleExport('md')}>
+                    Export as Markdown (.md)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleExport('txt')}>
+                    Export as Text (.txt)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleExport('html')}>
+                    Export as HTML (.html)
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
