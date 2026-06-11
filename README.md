@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
+# MD Insight Explorer
 
-## Project info
+> _README added by Robert Dickinson via Comet._
 
-**URL**: https://lovable.dev/projects/fdf6e6ea-1b7e-4b30-a505-ba44d472c792
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)
+![shadcn/ui](https://img.shields.io/badge/shadcn--ui-000000?logo=shadcnui&logoColor=white)
 
-## How can I edit this code?
+## About
 
-There are several ways of editing your application.
+**MD Insight Explorer** is an interactive viewer for long-form hydrology research documents (a dissertation). It renders document sections with a table of contents, background information, tables and figures, data visualizations, and an interactive catchment map (Giralang), making a Markdown-based research document easy to navigate and explore.
 
-**Use Lovable**
+It is part of the SWMMEnablement collection and is built on a modern Vite + React + TypeScript frontend styled with Tailwind CSS and shadcn/ui.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/fdf6e6ea-1b7e-4b30-a505-ba44d472c792) and start prompting.
+## What's Inside
 
-Changes made via Lovable will be committed automatically to this repo.
+| Area | Description |
+| --- | --- |
+| `src/components/DissertationViewer.tsx` | Main document/dissertation reader |
+| `src/components/TableOfContents.tsx` | Navigable table of contents |
+| `src/components/BackgroundInfo.tsx` | Background / introduction section |
+| `src/components/TablesAndFigures.tsx` | Tables and figures with navigation |
+| `src/components/DataVisualization.tsx` | Interactive data visualizations |
+| `src/components/CatchmentMap.tsx` | Interactive Giralang catchment map |
+| `src/components/NavLink.tsx` | In-document navigation links |
+| `src/components/ui/` | shadcn/ui reusable UI primitives |
+| `src/hooks/`, `src/lib/` | Custom React hooks and utilities |
+| `public/` | Document content and static assets |
 
-**Use your preferred IDE**
+## Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+| Layer | Technology |
+| --- | --- |
+| Language | TypeScript |
+| Framework | React |
+| Build tool | Vite |
+| Styling | Tailwind CSS |
+| UI components | shadcn/ui |
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+```bash
+# Clone the repository
+git clone https://github.com/SWMMEnablement/md-insight-explorer.git
+cd md-insight-explorer
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Then open the local URL printed by Vite (typically http://localhost:5173) in your browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Build for production
+npm run build
 
-**Use GitHub Codespaces**
+# Preview the production build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## License
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/fdf6e6ea-1b7e-4b30-a505-ba44d472c792) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+No license file is currently included. Contact the SWMMEnablement organization regarding reuse.
